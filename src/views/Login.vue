@@ -11,10 +11,17 @@
   </div>
 </template>
 
-
 <script>
+
+import Header from "@/components/Header";
+import Log from  "@/components/Login";
+
 export default {
-name: "Login"
+  name: "Login",
+  components: {
+    Header,
+    Log
+  }
 }
 </script>
 

@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="nav">
+      <router-link to="/login">Login</router-link> |
+      <router-link to="/register">Register</router-link> |
+      <router-link to="/home">Home</router-link> |
+    </div>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import { } from 'vuex';
+import { mapActions } from 'vuex';
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  methods: {
+    ...mapActions(['load_members']),
+    ...mapActions(['load_cards']),
+  },
+  mounted: function () {
+    this.load_members();
+    this.load_cards();
   }
 }
 </script>
@@ -23,6 +31,18 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#nav {
+  padding: 30px;
+}
+
+#nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>
