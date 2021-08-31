@@ -7,8 +7,8 @@
       <input type="username" v-model="form.username" class="form-control" placeholder="ime"/>
     </div>
     <div class="form-group">
-      <label>Prezime</label>
-      <input type="prezime" v-model="form.prezime" class="form-control" placeholder="prezime"/>
+      <label>Email</label>
+      <input type="email" v-model="form.email" class="form-control" placeholder="email"/>
     </div>
     <div class="form-group">
       <label>Password</label>

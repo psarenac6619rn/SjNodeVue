@@ -6,7 +6,7 @@
           <b-input v-model="newIme" class="mb-2 mr-sm-2 mb-sm-0" placeholder="ime"></b-input>
         </b-col>
         <b-col sm="2">
-          <b-input v-model="newPrezime" class="mb-2 mr-sm-2 mb-sm-0" placeholder="prezime"></b-input>
+          <b-input v-model="newEmail" class="mb-2 mr-sm-2 mb-sm-0" placeholder="email"></b-input>
         </b-col>
         <b-col sm="2">
           <b-input v-model="newPass" class="mb-2 mr-sm-2 mb-sm-0" placeholder="pass"></b-input>
@@ -25,7 +25,7 @@ const Joi = require('joi');
 
 const editSchema = Joi.object().keys({
   ime: Joi.string().trim().min(2).max(50).required(),
-  prezime: Joi.string().trim().min(2).max(50).required(),
+  email: Joi.string().trim().min(2).max(50).required(),
   pass: Joi.string().trim().min(2).max(50).required(),
 });
 
@@ -36,7 +36,7 @@ export default {
       type: String,
       default: ''
     },
-    prezime: {
+    email: {
       type: String,
       default: ''
     },
@@ -48,32 +48,32 @@ export default {
   data() {
     return {
       newIme: '',
-      newPrezime: '',
+      newEmail: '',
       newPass:' ',
     }
   },
   mounted: function () {
     this.newIme = this.ime;
-    this.newPrezime = this.prezime;
+    this.newEmail = this.email;
     this.newPass = this.pass;
   },
   methods: {
     ...mapActions(['new_member']),
 
     save: function() {
-      let {error} = editSchema.validate({ime: this.newIme, prezime: this.newPrezime, pass: this.newPass});
+      let {error} = editSchema.validate({ime: this.newIme, email: this.newEmail, pass: this.newPass});
 
       if(error) {
         alert(error.details[0].message);
       }else {
-        const msg = JSON.stringify({ime: this.newIme, prezime: this.newPrezime, pass: this.newPass});
+        const msg = JSON.stringify({ime: this.newIme, email : this.newEmail, pass: this.newPass});
 
         this.new_member(msg);
 
         alert("Uspesno uneti podaci!")
 
         this.newIme = '';
-        this.newPrezime = '';
+        this.newEmail = '';
         this.newPass = '';
       }
     }

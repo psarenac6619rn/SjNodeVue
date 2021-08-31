@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-jumbotron header="Teretana" :lead="'broj clanova: ' + members.length + ' -> Hello ' + user.ime">
+    <b-jumbotron header="Stolice.com" :lead="'broj clanova: ' + members.length + ' -> Hello ' + user.ime">
     </b-jumbotron>
     <b-button
         variant="outline-primary"
