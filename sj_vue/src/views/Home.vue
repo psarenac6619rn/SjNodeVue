@@ -4,8 +4,8 @@
     <b-container>
       <b-row>
         <b-col cm="6" >
-          <MembersList/>
-          <CardList/>
+          <StolicaList/>
+          <DrvoList/>
         </b-col>
       </b-row>
     </b-container>

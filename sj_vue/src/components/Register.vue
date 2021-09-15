@@ -66,7 +66,7 @@ export default {
       if(error) {
         alert(error.details[0].message);
       }else {
-        const msg = JSON.stringify({ime: this.newIme, email : this.newEmail, pass: this.newPass});
+        const msg = JSON.stringify({username: this.newIme, email : this.newEmail, password1: this.newPass});
 
         this.new_member(msg);
 

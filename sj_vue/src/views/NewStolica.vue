@@ -4,7 +4,7 @@
     <b-container>
       <b-row>
         <b-col cm="6" >
-          <EditMember/>
+          <EditStolica/>
         </b-col>
       </b-row>
     </b-container>
@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-name: "NewMember"
+    name: "NewStolica"
 }
 </script>
 

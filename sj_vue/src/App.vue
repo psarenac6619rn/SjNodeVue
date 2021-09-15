@@ -4,7 +4,7 @@
       <router-link to="/login">Login</router-link> |
       <router-link to="/register">Register</router-link> |
       <router-link to="/home">Home</router-link> |
-      <router-link to="/edit">New Member</router-link>
+      <router-link to="/edit">New Stolica</router-link>
     </div>
     <router-view/>
   </div>

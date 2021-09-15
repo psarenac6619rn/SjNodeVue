@@ -12,7 +12,7 @@
     </div>
     <div class="form-group">
       <label>Password</label>
-      <input type="password" v-model="form.password" class="form-control" placeholder="password"/>
+      <input type="password" v-model="form.password1" class="form-control" placeholder="password"/>
     </div>
 
     <button class="btn btn-primary btn-block">Login</button>
@@ -29,8 +29,8 @@ export default {
     return{
       form: {
         username:'',
-        prezime:'',
-        password:'',
+        email:'',
+        password1:'',
       }
     }
   },
@@ -40,13 +40,18 @@ export default {
   methods: {
     ...mapActions(["login"]),
     handleSubmit() {
-
-      this.login(this.form);
+      this.login({
+        username: this.form.username,
+        email: this.form.email,
+        password1: this.form.password1
+      });
       setTimeout(() => {
         if (this.user.id != undefined) {
-          this.makeToast("Uspesno", "Dobrodosli!", "success");
+          console.log(this.user)
           router.push({path: `/home`});
+          this.makeToast("Uspesno", "Dobrodosli!", "success");
         } else {
+          console.log(this.user)
           this.makeToast(
               "Neuspesno",
               "Ne postoji korisnik sa takvim kredencijalima.",

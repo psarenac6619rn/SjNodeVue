@@ -7,13 +7,13 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'sjispitnode'
+    database: 'ispitskripte'
 });
 const route = express.Router();
 route.use(express.json());
 
 route.get('/stolica', (req, res) => {
-    pool.query("select * from stolica", (err, rows) => {
+    pool.query("select * from projekat_stolica", (err, rows) => {
         //svaki objekat jedan red imaju atribute koje smo mi zadali
         if(err){
             res.status(500).send(err.sqlMessage);

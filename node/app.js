@@ -4,6 +4,9 @@ const history = require('connect-history-api-fallback');
 
 const app = express();
 
+const user = require('./rute/user');
+const stolica = require('./rute/stolica');
+
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
@@ -18,6 +21,7 @@ app.use(function (req, res, next) {
 });
 
 app.use('/api', user);
+app.use('/api', stolica);
 
 
 const staticDir = express.static(path.join(__dirname, 'dist'));

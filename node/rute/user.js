@@ -7,7 +7,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'sjispitnode'
+    database: 'ispitskripte'
 });
 
 const userSchema = Joi.object().keys({
@@ -19,8 +19,46 @@ const userSchema = Joi.object().keys({
 const route = express.Router();
 route.use(express.json());
 
-route.get('/user', (req, res) => {
-    pool.query("select * from user", (err, rows) => {
+route.post('/login', (req, res) => {
+    let {error} = userSchema.validate(req.body);
+
+    console.log(req.body.username, req.body.email, req.body.pass)
+    if(error){
+        res.status(400).send(error.details[0].message);
+    }else {
+        let query = "select * from projekat_user where username = ? and email = ? and password1 = ?"
+        let formated = mysql.format(query, [req.body.username, req.body.email, req.body.password1]);
+        console.log(formated)
+
+        pool.query(formated, (err, response) => {
+            if (err) {
+                res.status(500).send(err.sqlMessage);
+            } else {
+                if(response[0] == undefined) {
+                    res.status(403).send();
+                }
+                else {
+                    //unet red vracamo ga kao potvrdu da je unesen
+                    console.log("logovan user")
+                    query = "select * from projekat_user where id=?";
+                    formated = mysql.format(query, [response[0].id]);
+
+                    pool.query(formated, (err, rows) => {
+                        if (err) {
+                            res.status(500).send(err.sqlMessage);
+                        } else {
+                            console.log(rows[0])
+                            res.send(rows[0]);
+                        }
+                    });
+                }
+            }
+        });
+    }
+});
+
+route.get('/members', (req, res) => {
+    pool.query("select * from projekat_user", (err, rows) => {
         //svaki objekat jedan red imaju atribute koje smo mi zadali
         if(err){
             res.status(500).send(err.sqlMessage);
@@ -31,7 +69,7 @@ route.get('/user', (req, res) => {
 });
 
 route.get('/user/:id', (req, res) => {
-    let query = "select * from user where id=?";
+    let query = "select * from projekat_user where id=?";
     let formated = mysql.format(query, [req.params.id]);
 
     pool.query(formated, (err, rows) => {
@@ -47,21 +85,24 @@ route.get('/user/:id', (req, res) => {
     });
 });
 
-route.post('/user', (req, res) => {
+route.post('/projekat_user', (req, res) => {
     let {error} = userSchema.validate(req.body);
 
+    console.log(req.body.username, req.body.email, req.body.pass)
     if(error){
         res.status(400).send(error.details[0].message);
     }else {
-        let query = "insert into user (ime, email, password1) values ( ?, ?, ?)"
-        let formated = mysql.format(query, [req.body.ime, req.body.email, req.body.password1]);
+        let query = "insert into projekat_user (username, email, password1) values ( ?, ?, ?)"
+        let formated = mysql.format(query, [req.body.username, req.body.email, req.body.password1]);
+        console.log(formated)
 
         pool.query(formated, (err, response) => {
             if (err) {
                 res.status(500).send(err.sqlMessage);
             } else {
                 //unet red vracamo ga kao potvrdu da je unesen
-                query = "select * from user where id=?";
+                console.log("ubacen user")
+                query = "select * from projekat_user where id=?";
                 formated = mysql.format(query, [response.insertId]);
 
                 pool.query(formated, (err, rows) => {
@@ -82,14 +123,14 @@ route.put('/user/:id', (req, res) => {
     if(error){
         res.status(400).send(err.details[0].message);
     }else {
-        let query = "update user set ime=?, email=?, password1=?, where id=?";
+        let query = "update projekat_user set ime=?, email=?, password1=?, where id=?";
         let formated = mysql.format(query, [req.body.ime, req.body.email, req.body.password1, req.params.id]);
 
         pool.query(formated, (err, response) => {
             if (err) {
                 res.status(500).send(err.sqlMessage);
             } else {
-                query = "select * from user where id=?";
+                query = "select * from projekat_user where id=?";
                 formated = mysql.format(query, [req.params.id]);
 
                 pool.query(formated, (err, rows) => {
@@ -106,7 +147,7 @@ route.put('/user/:id', (req, res) => {
 });
 
 route.delete('/user/:id', (req, res) => {
-    let query = "select * from user where id=?";
+    let query = "select * from projekat_user where id=?";
     let formated = mysql.format(query, [req.params.id]);
 
     pool.query(formated, (err, rows) => {
@@ -115,7 +156,7 @@ route.delete('/user/:id', (req, res) => {
         }else{
             let member = rows[0];
 
-            let query = "delete from user where id=?";
+            let query = "delete from projekat_user where id=?";
             let formated = mysql.format(query, [req.params.id]);
 
             pool.query(formated, (err, response) => {

@@ -48,15 +48,15 @@ export default new Vuex.Store({
     },
     actions: {
         login: function({ commit }, user) {
-            fetch("http://localhost:800/api/members", {
+            fetch("http://localhost:800/api/login", {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    ime: user.username,
-                    prezime: user.prezime,
-                    pass: user.password,
+                    username: user.username,
+                    email: user.email,
+                    password1: user.password1,
                 }),
             })
                 .then((response) => {
@@ -81,7 +81,7 @@ export default new Vuex.Store({
         },
 
         load_members: function ({ commit }){
-            fetch('http://localhost:800/api/members', { method: 'get' }).then((response) => {
+            fetch('http://localhost:8080/ispitskripte/projekat_user', { method: 'get' }).then((response) => {
                 if (!response.ok)
                     throw response;
 
@@ -118,7 +118,7 @@ export default new Vuex.Store({
         },
 
         new_member: function({ commit }, members) {
-            fetch('http://localhost:800/api/members', {
+            fetch('http://localhost:800/api/projekat_user', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'

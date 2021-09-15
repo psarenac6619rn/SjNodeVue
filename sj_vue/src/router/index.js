@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import NewMember from "@/views/NewMember";
+import NewStolica from "@/views/NewStolica";
 import Member from "@/views/Member";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
@@ -26,8 +26,8 @@ const routes = [
     },
     {
         path: '/edit',
-        name: 'NewMember',
-        component: NewMember
+        name: 'NewStolica',
+        component: NewStolica
     },
     {
         path: '/member/:id',
