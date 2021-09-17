@@ -25,7 +25,7 @@ const routes = [
         component: Home
     },
     {
-        path: '/edit',
+        path: '/newStolica',
         name: 'NewStolica',
         component: NewStolica
     },

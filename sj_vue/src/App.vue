@@ -4,7 +4,7 @@
       <router-link to="/">Login</router-link> |
       <router-link to="/register">Register</router-link> |
       <router-link to="/home">Home</router-link> |
-      <router-link to="/edit">New Stolica</router-link>
+      <router-link to="/newStolica">NewStolica</router-link>
     </div>
     <router-view/>
   </div>
@@ -18,11 +18,10 @@ export default {
 
   methods: {
     ...mapActions(['load_members']),
-    ...mapActions(['load_cards']),
+    ...mapActions(['load_stolice'])
   },
   mounted: function () {
     this.load_members();
-    this.load_cards();
   }
 }
 </script>

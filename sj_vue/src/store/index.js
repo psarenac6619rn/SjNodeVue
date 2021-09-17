@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        members : [],
+        stolice : [],
         user : {},
     },
     mutations: {
@@ -17,30 +17,32 @@ export default new Vuex.Store({
             state.user = {};
         },
 
-        set_members : function (state, members) {
-            state.members = members;
+        set_stolice : function (state, stolice) {
+            state.stolice = stolice;
         },
-
-
         add_member: function (state, member) {
             state.members.push(member);
         },
 
-        remove_member: function (state, id) {
-            for(let i = 0; i < state.members.length; i++){
-                if(state.members[i].id === id){
-                    state.members.splice(i, 1);
+        add_stolice: function (state, stolice) {
+            state.stolice.push(stolice);
+        },
+
+        remove_stolice: function (state, id) {
+            for(let i = 0; i < state.stolice.length; i++){
+                if(state.stolice[i].id === id){
+                    state.stolice.splice(i, 1);
                     break;
                 }
             }
         },
 
-        update_member: function (state, payLoad) {
-            for(let i = 0; i < state.members.length; i++){
-                if(state.members[i].id === parseInt(payLoad.msg.id)){
-                    state.members[i].ime = payLoad.msg.ime;
-                    state.members[i].prezime = payLoad.msg.prezime;
-                    state.members[i].ulica = payLoad.msg.ulica;
+        update_stolice: function (state, payLoad) {
+            for(let i = 0; i < state.stolice.length; i++){
+                if(state.stolice[i].id === parseInt(payLoad.msg.id)){
+                    state.stolice[i].model = payLoad.msg.ime;
+                    state.stolice[i].dimenzija = payLoad.msg.dimenzija;
+                    state.stolice[i].cena = payLoad.msg.cena;
                     break;
                 }
             }
@@ -98,6 +100,23 @@ export default new Vuex.Store({
             });
         },
 
+        load_stolice: function ({ commit }){
+            fetch('http://localhost:8080/ispitskripte/projekat_stolice', { method: 'get' }).then((response) => {
+                if (!response.ok)
+                    throw response;
+
+                return response.json()
+            }).then((jsonData) => {
+                commit('set_members', jsonData)
+            }).catch((error) => {
+                if (typeof error.text === 'function')
+                    error.text().then((errorMessage) => {
+                        alert(errorMessage);
+                    });
+                else
+                    alert(error);
+            });
+        },
 
         delete_member: function({ commit }, id) {
             fetch(`http://localhost:800/api/members/${id}`, { method: 'delete' }).then((response) => {
@@ -140,6 +159,30 @@ export default new Vuex.Store({
                     alert(error);
             });
         },
+        new_stolica: function({ commit }, members) {
+            fetch('http://localhost:800/api/projekat_stolica', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: members
+            }).then((response) => {
+                if (!response.ok)
+                    throw response;
+
+                return response.json();
+            }).then((jsonData) => {
+                commit('add_stolica', jsonData);
+            }).catch((error) => {
+                if (typeof error.text === 'function')
+                    error.text().then((errorMessage) => {
+                        alert(errorMessage);
+                    });
+                else
+                    alert(error);
+            });
+        },
+
 
         change_member: function({ commit }, payload) {
             fetch(`http://localhost:800/api/members/${payload.id}`, {

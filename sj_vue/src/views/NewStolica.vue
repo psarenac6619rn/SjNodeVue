@@ -4,15 +4,23 @@
     <b-container>
       <b-row>
         <b-col cm="6" >
-          <EditStolica/>
+          <Stolica/>
         </b-col>
       </b-row>
     </b-container>
   </div>
 </template>
 <script>
+import Header from "@/components/Header";
+import Stolica from "@/components/NewStolica";
+
+
 export default {
-    name: "NewStolica"
+  name: "NewStolica",
+  components: {
+    Header,
+    Stolica,
+  }
 }
 </script>
 
