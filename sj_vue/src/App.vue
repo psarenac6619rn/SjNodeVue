@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/login">Login</router-link> |
+      <router-link to="/">Login</router-link> |
       <router-link to="/register">Register</router-link> |
       <router-link to="/home">Home</router-link> |
       <router-link to="/edit">New Stolica</router-link>
@@ -12,8 +12,10 @@
 
 <script>
 import { mapActions } from 'vuex';
+
 export default {
   name: 'App',
+
   methods: {
     ...mapActions(['load_members']),
     ...mapActions(['load_cards']),

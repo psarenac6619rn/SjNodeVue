@@ -52,6 +52,7 @@ export default {
           this.makeToast("Uspesno", "Dobrodosli!", "success");
         } else {
           console.log(this.user)
+          console.log("askcn")
           this.makeToast(
               "Neuspesno",
               "Ne postoji korisnik sa takvim kredencijalima.",
