@@ -18,17 +18,6 @@ const stolicaSchema = Joi.object().keys({
     cena_DIN: Joi.string().trim().min(4).max(50).required(),
 });
 
-route.get('/stolica', (req, res) => {
-    pool.query("select * from projekat_stolica", (err, rows) => {
-        //svaki objekat jedan red imaju atribute koje smo mi zadali
-        if(err){
-            res.status(500).send(err.sqlMessage);
-        }else{
-            res.send(rows);
-        }
-    });
-});
-
 route.post('/projekat_stolica', (req, res) => {
     let {error} = stolicaSchema.validate(req.body);
 
@@ -37,7 +26,7 @@ route.post('/projekat_stolica', (req, res) => {
         res.status(400).send(error.details[0].message);
     }else {
         let query = "insert into projekat_stolica (model, diimenzije, cena_DIN) values ( ?, ?, ?)"
-        let formated = mysql.format(query, [req.body.username, req.body.email, req.body.password1]);
+        let formated = mysql.format(query, [req.body.model, req.body.dimenzije, req.body.cena_DIN]);
         console.log(formated)
 
         pool.query(formated, (err, response) => {
@@ -59,6 +48,8 @@ route.post('/projekat_stolica', (req, res) => {
         });
     }
 });
+
+
 
 
 module.exports = route;

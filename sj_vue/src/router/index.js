@@ -5,7 +5,9 @@ import NewStolica from "@/views/NewStolica";
 import Member from "@/views/Member";
 import Login from "@/views/Login";
 import Register from "@/views/Register";
-
+import NewDrvo from "@/views/NewDrvo";
+import EditDrvo from "@/views/EditDrvo";
+import DeleteDrvo from "@/views/DeleteDrvo";
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,6 +35,21 @@ const routes = [
         path: '/member/:id',
         name: 'Member',
         component: Member
+    },
+    {
+        path: '/newDrvo',
+        name: 'NewDrvo',
+        component: NewDrvo
+    },
+    {
+        path: '/editDrvo',
+        name: 'EditDrvo',
+        component: EditDrvo
+    },
+    {
+    path: '/deleteDrvo',
+    name: 'DeleteDrvo',
+    component: DeleteDrvo
     }
 ]
 

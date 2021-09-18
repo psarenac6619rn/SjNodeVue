@@ -1,6 +1,8 @@
 const express = require('express');
 const Joi = require('joi');
 const mysql = require('mysql');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const pool = mysql.createPool({
     connectionLimit: 100,
@@ -18,6 +20,29 @@ const userSchema = Joi.object().keys({
 
 const route = express.Router();
 route.use(express.json());
+
+/*
+let hasher = (password, salt) => {
+    let hash = crypto.createHmac('sha512', salt);
+    hash.update(password);
+    let value = hash.digest('hex');
+    return {
+        salt: salt,
+        hashedpassword: value
+    };
+};
+
+let hash = (password, salt) => {
+    if (password == null || salt == null) {
+        throw new Error('Must Provide Password and salt values');
+    }
+    if (typeof password !== 'string' || typeof salt !== 'string') {
+        throw new Error('password must be a string and salt must either be a salt string or a number of rounds');
+    }
+    return hasher(password, salt);
+};
+* * */
+
 
 route.post('/login', (req, res) => {
     let {error} = userSchema.validate(req.body);
@@ -88,34 +113,35 @@ route.get('/user/:id', (req, res) => {
 route.post('/projekat_user', (req, res) => {
     let {error} = userSchema.validate(req.body);
 
-    console.log(req.body.username, req.body.email, req.body.pass)
+    console.log(req.body.username, req.body.email, req.body.password1)
     if(error){
         res.status(400).send(error.details[0].message);
     }else {
-        let query = "insert into projekat_user (username, email, password1) values ( ?, ?, ?)"
-        let formated = mysql.format(query, [req.body.username, req.body.email, req.body.password1]);
-        console.log(formated)
+        //bcrypt.hash(req.body.password1, saltRound, (err, hash) => {
+            let query = "insert into projekat_user (username, email, password1) values ( ?, ?, ?)"
+            let formated = mysql.format(query, [req.body.username, req.body.email, req.body.password1]);
+            console.log(formated)
 
-        pool.query(formated, (err, response) => {
-            if (err) {
-                res.status(500).send(err.sqlMessage);
-            } else {
-                //unet red vracamo ga kao potvrdu da je unesen
-                console.log("ubacen user")
-                query = "select * from projekat_user where id=?";
-                formated = mysql.format(query, [response.insertId]);
+            pool.query(formated, (err, response) => {
+                if (err) {
+                    res.status(500).send(err.sqlMessage);
+                } else {
+                    //unet red vracamo ga kao potvrdu da je unesen
+                    console.log("ubacen user")
+                    query = "select * from projekat_user where id=?";
+                    formated = mysql.format(query, [response.insertId]);
 
-                pool.query(formated, (err, rows) => {
-                    if (err) {
-                        res.status(500).send(err.sqlMessage);
-                    } else {
-                        res.send(rows[0]);
-                    }
-                });
-            }
-        });
-    }
-});
+                    pool.query(formated, (err, rows) => {
+                        if (err) {
+                            res.status(500).send(err.sqlMessage);
+                        } else {
+                            res.send(rows[0]);
+                        }
+                    });
+                }
+            });
+        }
+    });
 //update, ako upit uspe , select na osnovu id koji sam update i vracam poruku sa tim id
 route.put('/user/:id', (req, res) => {
     let {error} = userSchema.validate(req.body);

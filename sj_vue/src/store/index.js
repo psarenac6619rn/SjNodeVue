@@ -6,6 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         stolice : [],
+        drvo: [],
+        member:[],
         user : {},
     },
     mutations: {
@@ -28,10 +30,30 @@ export default new Vuex.Store({
             state.stolice.push(stolice);
         },
 
+        add_drvo: function (state, drvo) {
+            state.drvo.push(drvo);
+        },
+
         remove_stolice: function (state, id) {
             for(let i = 0; i < state.stolice.length; i++){
                 if(state.stolice[i].id === id){
                     state.stolice.splice(i, 1);
+                    break;
+                }
+            }
+        },
+        remove_member: function (state, id) {
+            for(let i = 0; i < state.member.length; i++){
+                if(state.member[i].id === id){
+                    state.member.splice(i, 1);
+                    break;
+                }
+            }
+        },
+        remove_drvo: function (state, id) {
+            for(let i = 0; i < state.drvo.length; i++){
+                if(state.drvo[i].id === id){
+                    state.drvo.splice(i, 1);
                     break;
                 }
             }
@@ -135,6 +157,40 @@ export default new Vuex.Store({
                     alert(error);
             });
         },
+        delete_stolice: function({ commit }, id) {
+            fetch(`http://localhost:800/api/projekat_stolice/${id}`, { method: 'delete' }).then((response) => {
+                if (!response.ok)
+                    throw response;
+
+                return response.json()
+            }).then((jsonData) => {
+                commit('remove_stolice', jsonData.id)
+            }).catch((error) => {
+                if (typeof error.text === 'function')
+                    error.text().then((errorMessage) => {
+                        alert(errorMessage);
+                    });
+                else
+                    alert(error);
+            });
+        },
+        delete_drvo: function({ commit }, id) {
+            fetch(`http://localhost:800/api/projekat_drvo/${id}`, { method: 'delete' }).then((response) => {
+                if (!response.ok)
+                    throw response;
+
+                return response.json()
+            }).then((jsonData) => {
+                commit('remove_drvo', jsonData.id)
+            }).catch((error) => {
+                if (typeof error.text === 'function')
+                    error.text().then((errorMessage) => {
+                        alert(errorMessage);
+                    });
+                else
+                    alert(error);
+            });
+        },
 
         new_member: function({ commit }, members) {
             fetch('http://localhost:800/api/projekat_user', {
@@ -183,6 +239,29 @@ export default new Vuex.Store({
             });
         },
 
+        new_drvo: function({ commit }, members) {
+            fetch('http://localhost:800/api/projekat_drvo', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: members
+            }).then((response) => {
+                if (!response.ok)
+                    throw response;
+
+                return response.json();
+            }).then((jsonData) => {
+                commit('add_drvo', jsonData);
+            }).catch((error) => {
+                if (typeof error.text === 'function')
+                    error.text().then((errorMessage) => {
+                        alert(errorMessage);
+                    });
+                else
+                    alert(error);
+            });
+        },
 
         change_member: function({ commit }, payload) {
             fetch(`http://localhost:800/api/members/${payload.id}`, {

@@ -4,6 +4,9 @@
       <router-link to="/">Login</router-link> |
       <router-link to="/register">Register</router-link> |
       <router-link to="/home">Home</router-link> |
+      <router-link to="/newDrvo">NewDrvo</router-link> |
+      <router-link to="/editDrvo">EditDrvo</router-link> |
+      <router-link to="/deleteDrvo">DeleteDrvo</router-link> |
       <router-link to="/newStolica">NewStolica</router-link>
     </div>
     <router-view/>
@@ -18,7 +21,6 @@ export default {
 
   methods: {
     ...mapActions(['load_members']),
-    ...mapActions(['load_stolice'])
   },
   mounted: function () {
     this.load_members();

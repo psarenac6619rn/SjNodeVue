@@ -6,6 +6,7 @@ const app = express();
 
 const user = require('./rute/user');
 const stolica = require('./rute/stolica');
+const drvo = require('./rute/drvo');
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -22,6 +23,7 @@ app.use(function (req, res, next) {
 
 app.use('/api', user);
 app.use('/api', stolica);
+app.use('/api', drvo)
 
 
 const staticDir = express.static(path.join(__dirname, 'dist'));
